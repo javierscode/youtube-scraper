@@ -1,10 +1,13 @@
-const trends = require('./scripts/trends');
-const lastest = require('./scripts/lastest');
-const getChannel = require('./scripts/getChannel');
 const chalk = require('chalk');
 const clear = require('clear');
 const figlet = require('figlet');
 const inquirer = require('inquirer');
+
+const trends = require('./scripts/trends');
+const lastest = require('./scripts/lastest');
+const getChannel = require('./scripts/getChannel');
+const getChannelInfo = require('./scripts/getChannelInfo');
+
 
 
 function  app() {
@@ -26,7 +29,7 @@ function  app() {
       choices: [
         new inquirer.Separator(),
         'Get Youtube Trends',
-        'Get Channel URL',
+        'Get Channel information',
         'Get the latest videos from a Youtube channel',
         'Exit'
       ]
@@ -40,9 +43,9 @@ function  app() {
                 await trends();
                 setTimeout(app, 4000);
                 break;
-            case 'Get Channel URL':
+            case 'Get Channel information':
                 var url= await getChannel();
-                console.log(url);
+                await getChannelInfo(url)
                 setTimeout(app, 4000);
                 break;
             case 'Get the latest videos from a Youtube channel':
