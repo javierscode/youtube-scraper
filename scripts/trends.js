@@ -2,10 +2,15 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 module.exports = async () => {
+
     console.log("Scraping...");
+
+     //I open the browser and surf to the URL
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto('https://www.youtube.com/feed/trending');
+
+    //I get the lastest videos from the DOM
     const result = await page.evaluate(() => {
         window.scrollTo(0,document.documentElement.scrollHeight);
 
@@ -23,12 +28,13 @@ module.exports = async () => {
         ));
     });
 
+    //I write the result into the file
     var json = JSON.stringify(result);
-
     fs.writeFile('./docs/trends.json',json,'utf8', function (error) {
         if(error) return console.error(error);
     });
 
+    //I Close the browser
     await browser.close();
 
     console.log('The youtube Trends are been scraped succesfully. You can check it in the docs folder.');

@@ -1,27 +1,23 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
-const inquirer = require('inquirer');
 const clear = require('clear');
 
 module.exports = async (channel) => {
+
     clear();
-    
     console.log("Scraping...");
+
+    //I open the browser and surf to the URL
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(channel+'/videos');
     
-    await page.waitFor(() => !!(document.querySelector("#contents > ytd-grid-renderer > #items")));
-    console.log("pasado");
-    
+    //I look forward to loading the important items
+    await page.waitFor(() => !!(document.querySelector("#contents > ytd-grid-renderer > #items")));    
     await page.waitFor(() => !!(document.querySelector("#contents > ytd-grid-renderer > #items").querySelectorAll("ytd-grid-video-renderer")));
-    console.log("pasado");
-    
     await page.waitFor(() => !!(document.querySelector("#contents > ytd-grid-renderer > #items").querySelectorAll("ytd-grid-video-renderer").length > 10));
 
-    console.log("Comprobado");
-    
-    await page.screenshot({path:'./docs/lastest.png', type:'png',fullPage:true});
+    //I get the lastest videos from the DOM
     const result = await page.evaluate(()=>{
 
       return Array.from(document.querySelector("#contents > ytd-grid-renderer > #items").querySelectorAll("ytd-grid-video-renderer")).slice(0,10).map((i, position)=>(
@@ -35,13 +31,16 @@ module.exports = async (channel) => {
         }
       ));
     });
-    var json = JSON.stringify(result);
 
+    //I write the result into the file
+    var json = JSON.stringify(result);
     fs.writeFile('./docs/lastest.json',json,'utf8', function (error) {
         if(error) return console.error(error);
     });
-
+    
+    //I Close the browser
     await browser.close();
+    
     console.log('The lastest videos are been scraped succesfully. You can check it in the docs folder.');
 
 };

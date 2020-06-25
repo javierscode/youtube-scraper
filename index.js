@@ -51,6 +51,7 @@ function  app() {
                 setTimeout(app, 4000);
                 break;
             default:
+              process.exit();
                 break;
         }
   });
