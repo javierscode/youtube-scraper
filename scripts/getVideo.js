@@ -11,7 +11,7 @@ module.exports = async () => {
       {
         type: 'input',
         name: 'name',
-        message: "Enter the name of the channel"
+        message: "Enter the name of the video"
       }
     ]);
 
@@ -24,14 +24,16 @@ module.exports = async () => {
     
 
     //Get the quantity and display it.
-    const quantity = await page.evaluate(()=>(Array.from(document.querySelectorAll("#content-section")).length));
+    const quantity = await page.evaluate(()=>(Array.from(document.querySelectorAll("#dismissable.ytd-video-renderer")).length));
     clear(); console.log("We found "+quantity+" options");
     
+
     //I get the channel options from the DOM
-    const options = await page.evaluate(()=>(Array.from(document.querySelectorAll("#content-section")).map(i=>(
+    const options = await page.evaluate(()=>(Array.from(document.querySelectorAll("#dismissable.ytd-video-renderer")).map(i=>(
         {
-            title: i.querySelector("#text").innerText,
-            href: i.querySelector("#main-link").href
+            title: i.querySelector("#video-title").innerText,
+            channel: i.querySelector("#channel-name #text").innerText,
+            href: i.querySelector("#video-title").href
         }
     ))));
     
@@ -39,15 +41,15 @@ module.exports = async () => {
     await browser.close();
 
     //I create a new menu in order to select the wanted channel
-    const choices = options.map(i=>(i.title));
+    const choices = options.map(i=>(i.title+' |<->| '+i.channel));
     const {selection} = await inquirer.prompt([{
       type: 'list',
       name: 'selection',
-      message: 'Select the searched channel that you want',
+      message: 'Select the searched video that you want',
       choices: choices
     }]);
 
     //Find channel in the array in order to return the href
-    var found= options.find(element => element.title == selection);
+    const found= options.find(i => i.title+' |<->| '+i.channel == selection);
     return found.href;
 };

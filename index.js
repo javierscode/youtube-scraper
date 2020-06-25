@@ -7,6 +7,8 @@ const trends = require('./scripts/trends');
 const lastest = require('./scripts/lastest');
 const getChannel = require('./scripts/getChannel');
 const getChannelInfo = require('./scripts/getChannelInfo');
+const getVideo = require('./scripts/getVideo');
+const getVideoInfo = require('./scripts/getVideoInfo');
 
 
 
@@ -31,6 +33,7 @@ function  app() {
         'Get Youtube Trends',
         'Get Channel information',
         'Get the latest videos from a Youtube channel',
+        'Get Video information',
         'Exit'
       ]
     }
@@ -52,6 +55,10 @@ function  app() {
                 var url= await getChannel();
                 await lastest(url);
                 setTimeout(app, 4000);
+                break;
+            case 'Get Video information':
+                var url= await getVideo();
+                await getVideoInfo(url);
                 break;
             default:
               process.exit();
