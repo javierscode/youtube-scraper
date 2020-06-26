@@ -37,5 +37,5 @@ module.exports = async () => {
     //I Close the browser
     await browser.close();
 
-    console.log('The youtube Trends are been scraped succesfully. You can check it in the docs folder.');
+    console.log('The youtube Trends are been scraped succesfully. You can check it in the /docs folder the trends.json file.');
 };

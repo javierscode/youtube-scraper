@@ -46,6 +46,6 @@ module.exports = async (channel) => {
     //I Close the browsers
     await browser.close();
     
-    console.log('The channel info is been scraped succesfully. You can check it in the docs folder.');
+    console.log('The channel info is been scraped succesfully. You can check it in the /docs folder the channelInfo.json file.');
 
 };

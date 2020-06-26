@@ -41,6 +41,6 @@ module.exports = async (channel) => {
     //I Close the browser
     await browser.close();
     
-    console.log('The lastest videos are been scraped succesfully. You can check it in the docs folder.');
+    console.log('The lastest videos are been scraped succesfully. You can check it in the /docs folder the lastest.json file.');
 
 };
